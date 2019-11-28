@@ -18,7 +18,8 @@ import com.miracozkan.challange01.datalayer.model.ApiResponse
 
 @Database(
     entities = [ApiResponse::class],
-    version = 3
+    version = 1,
+    exportSchema = false
 )
 
 abstract class ProjectDatabase : RoomDatabase() {

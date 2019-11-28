@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.miracozkan.challange01.R
+import com.miracozkan.challange01.datalayer.local.ProjectDatabase
 import com.miracozkan.challange01.datalayer.remote.RetrofitClient
 import com.miracozkan.challange01.utils.DependencyUtil
 import com.miracozkan.challange01.utils.Status.*
@@ -24,7 +25,10 @@ import kotlinx.android.synthetic.main.fragment_splash.*
 class SplashFragment : Fragment() {
 
     private val projectRepository by lazy {
-        DependencyUtil.getProjectRepository(RetrofitClient().getRetrofitClient())
+        DependencyUtil.getProjectRepository(
+            RetrofitClient().getRetrofitClient(),
+            ProjectDatabase.getInstance(context!!).projectDao()
+        )
     }
 
     private val projectViewModel by lazy {

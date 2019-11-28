@@ -11,6 +11,7 @@ buildscript {
         exo_player = '2.9.6'
         lifecycle='2.2.0-alpha02'
         nav = '2.2.0-rc02'
+        paging = '2.1.0'
     }
 
     repositories {
