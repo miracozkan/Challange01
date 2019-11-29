@@ -57,7 +57,6 @@ class SplashFragment : Fragment() {
                 SUCCESS -> {
                     splashFragmentProgressBar.hide()
                     findNavController().navigate(action)
-                    Toast.makeText(activity, "SUCCES", Toast.LENGTH_SHORT).show()
                 }
                 ERROR -> {
                     splashFragmentProgressBar.hide()
@@ -66,7 +65,6 @@ class SplashFragment : Fragment() {
                 }
                 LOADING -> {
                     splashFragmentProgressBar.show()
-                    Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     Toast.makeText(activity, "ELSE", Toast.LENGTH_SHORT).show()

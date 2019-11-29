@@ -23,7 +23,7 @@ class RetrofitClient {
             .build()
     private val projectService = retrofit.create(ProjectService::class.java)
 
-    fun getRetrofitClient() = projectService
+    fun getRetrofitClient(): ProjectService = projectService
 
     companion object {
         const val baseUrl = "http://starlord.hackerearth.com/"

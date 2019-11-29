@@ -23,13 +23,16 @@ interface ProjectDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAllData(apiResponse: ApiResponse)
 
-    @Query("SELECT * FROM ApiResponse")
-    fun getDataWithoutOrder(): DataSource.Factory<Int, ApiResponse>
+    @Query("SELECT * FROM ApiResponse WHERE CAST(numBackers AS INT) >= :bankersSize")
+    fun getDataWithoutOrder(bankersSize: Int): DataSource.Factory<Int, ApiResponse>
 
-    @Query("SELECT * FROM ApiResponse where title LIKE  :text")
-    fun loadAllByName(text: String?): DataSource.Factory<Int, ApiResponse>
+    @Query("SELECT * FROM ApiResponse WHERE CAST(numBackers AS INT) >= :bankersSize AND title LIKE  :text")
+    fun loadAllByName(text: String, bankersSize: Int): DataSource.Factory<Int, ApiResponse>
 
-    @Query("SELECT * FROM ApiResponse WHERE title LIKE :text ORDER BY title ASC")
-    fun getDataWithAlphabet(text: String): DataSource.Factory<Int, ApiResponse>
+    @Query("SELECT * FROM ApiResponse WHERE CAST(numBackers AS INT) >= :bankersSize AND title LIKE :text  ORDER BY title ASC")
+    fun getDataWithAlphabet(text: String, bankersSize: Int): DataSource.Factory<Int, ApiResponse>
+
+    @Query("SELECT MAX(CAST(numBackers AS INT)) FROM ApiResponse")
+    suspend fun getMaxValue(): Int
 
 }

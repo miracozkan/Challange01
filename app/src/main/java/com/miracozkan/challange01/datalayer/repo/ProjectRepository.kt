@@ -21,8 +21,7 @@ import com.miracozkan.challange01.utils.Status.*
 class ProjectRepository(
     private val projectService: ProjectService,
     private val projectDao: ProjectDao
-) :
-    BaseRepository() {
+) : BaseRepository() {
 
     private suspend fun fetchDataFromRemote(): Result<List<ApiResponse>> {
         return getResult { projectService.getData() }

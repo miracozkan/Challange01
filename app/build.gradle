@@ -88,5 +88,8 @@ dependencies {
     //paging
     implementation "androidx.paging:paging-runtime:$paging"
 
+    //customViews
+    implementation 'com.sdsmdg.harjot:croller:1.0.7'
+
 
 }
