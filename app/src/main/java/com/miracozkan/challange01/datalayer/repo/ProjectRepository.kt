@@ -31,6 +31,7 @@ class ProjectRepository(
         return when (fetchDataFromRemote().status) {
             SUCCESS -> {
                 fetchDataFromRemote().data?.forEach { _apiResponse ->
+                    _apiResponse.endTime = _apiResponse.endTime?.substring(0, 10)
                     projectDao.insertAllData(_apiResponse)
                 }
                 SUCCESS
@@ -43,4 +44,5 @@ class ProjectRepository(
             }
         }
     }
+
 }

@@ -20,13 +20,13 @@ import com.miracozkan.challange01.datalayer.model.ApiResponse
 @Dao
 interface ProjectDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllData(apiResponse: ApiResponse)
 
-    @Query("SELECT * FROM ApiResponse WHERE CAST(numBackers AS INT) >= :bankersSize")
+    @Query("SELECT * FROM ApiResponse WHERE CAST(numBackers AS INT) >= :bankersSize ORDER BY endTime DESC")
     fun getDataWithoutOrder(bankersSize: Int): DataSource.Factory<Int, ApiResponse>
 
-    @Query("SELECT * FROM ApiResponse WHERE CAST(numBackers AS INT) >= :bankersSize AND title LIKE  :text")
+    @Query("SELECT * FROM ApiResponse WHERE CAST(numBackers AS INT) >= :bankersSize AND title LIKE  :text ORDER BY endTime DESC")
     fun loadAllByName(text: String, bankersSize: Int): DataSource.Factory<Int, ApiResponse>
 
     @Query("SELECT * FROM ApiResponse WHERE CAST(numBackers AS INT) >= :bankersSize AND title LIKE :text  ORDER BY title ASC")

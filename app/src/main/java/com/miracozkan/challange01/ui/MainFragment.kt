@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -62,14 +63,15 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener, View.OnClickLis
         with(recycItemList) {
             layoutManager = LinearLayoutManager(context!!)
             adapter = DataListAdapter {
-
+                Toast.makeText(context, it.endTime, Toast.LENGTH_SHORT).show()
             }
         }
         runObserver()
         setNewText()
         setMaxValue()
         srcView.setOnQueryTextListener(this)
-        fltAlphaOrDate.setOnClickListener(this)
+        fltAlpha.setOnClickListener(this)
+        fltTime.setOnClickListener(this)
         fltBankerRange.setOnClickListener(this)
     }
 
@@ -102,13 +104,16 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener, View.OnClickLis
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.fltAlphaOrDate -> {
+            R.id.fltAlpha -> {
                 isAlphabet = !isAlphabet
                 mainViewModel.triggerSource(newText, isAlphabet, bankerBarAmount)
             }
             R.id.fltBankerRange -> {
                 initDialog()
                 setDialogButtons()
+            }
+            R.id.fltTime -> {
+                mainViewModel.triggerSource(newText, !isAlphabet, bankerBarAmount)
             }
         }
     }
