@@ -1,6 +1,5 @@
 package com.miracozkan.challange01.datalayer.repo
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -23,10 +22,12 @@ import com.miracozkan.challange01.datalayer.model.ApiResponse
 class MainRepository(private val projectDao: ProjectDao) : BaseRepository() {
 
     var listApiResponse: LiveData<PagedList<ApiResponse>>? = null
-    var filterTextAll = MutableLiveData<String>("")
+    private var filterTextAll = MutableLiveData<String>()
+    private var isAlphabetList: Boolean = false
 
     init {
         initPaging()
+        filterTextAll.postValue("")
     }
 
     private fun initPaging() {
@@ -36,21 +37,32 @@ class MainRepository(private val projectDao: ProjectDao) : BaseRepository() {
         listApiResponse =
             Transformations.switchMap<String, PagedList<ApiResponse>>(filterTextAll) { input: String? ->
                 if (input == null || input == "" || input == "%%") {
-                    Log.e("Here", "Hereeeee")
-                    return@switchMap LivePagedListBuilder<Int, ApiResponse>(
-                        projectDao.getDataWithoutOrder(), config
-                    ).build()
+                    if (isAlphabetList) {
+                        return@switchMap LivePagedListBuilder<Int, ApiResponse>(
+                            projectDao.getDataWithAlphabet("%%"), config
+                        ).build()
+                    } else {
+                        return@switchMap LivePagedListBuilder<Int, ApiResponse>(
+                            projectDao.getDataWithoutOrder(), config
+                        ).build()
+                    }
                 } else {
-                    Log.e("Hereeeee", "Hereeeee")
-                    return@switchMap LivePagedListBuilder<Int, ApiResponse>(
-                        projectDao.loadAllByName(input), config
-                    ).build()
+                    if (isAlphabetList) {
+                        return@switchMap LivePagedListBuilder<Int, ApiResponse>(
+                            projectDao.getDataWithAlphabet(input), config
+                        ).build()
+                    } else {
+                        return@switchMap LivePagedListBuilder<Int, ApiResponse>(
+                            projectDao.loadAllByName(input), config
+                        ).build()
+                    }
                 }
             }
     }
 
-    fun setNewPaging(text: String) {
+    fun setNewPaging(text: String, isAlphabet: Boolean) {
         filterTextAll.postValue("%$text%")
+        isAlphabetList = isAlphabet
         initPaging()
     }
 }

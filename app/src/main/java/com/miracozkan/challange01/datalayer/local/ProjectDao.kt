@@ -29,4 +29,7 @@ interface ProjectDao {
     @Query("SELECT * FROM ApiResponse where title LIKE  :text")
     fun loadAllByName(text: String?): DataSource.Factory<Int, ApiResponse>
 
+    @Query("SELECT * FROM ApiResponse WHERE title LIKE :text ORDER BY title ASC")
+    fun getDataWithAlphabet(text: String): DataSource.Factory<Int, ApiResponse>
+
 }

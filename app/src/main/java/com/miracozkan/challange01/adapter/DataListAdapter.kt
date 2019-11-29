@@ -1,6 +1,5 @@
 package com.miracozkan.challange01.adapter
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import com.miracozkan.challange01.datalayer.model.ApiResponse
@@ -24,7 +23,6 @@ class DataListAdapter(
         DataListViewHolder(parent)
 
     override fun onBindViewHolder(holder: DataListViewHolder, position: Int) {
-        Log.e("adapter", currentList?.size.toString())
         getItem(position)?.let {
             holder.bind(it, onItemClickListener)
         }

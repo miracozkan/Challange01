@@ -1,7 +1,6 @@
 package com.miracozkan.challange01.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +17,15 @@ import com.miracozkan.challange01.utils.ViewModelFactory
 import com.miracozkan.challange01.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : Fragment(), SearchView.OnQueryTextListener {
+class MainFragment : Fragment(), SearchView.OnQueryTextListener, View.OnClickListener {
 
     //TODO UI
     //TODO bankerFilter Eklencek
     //TODO isAlphabet Eklenecek
     //TODO timeFilter
+
+    private var isAlphabet: Boolean = false
+    private var newText: String = ""
 
     private val mainRepository by lazy {
         DependencyUtil.getMainRepository(
@@ -49,7 +51,6 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.e("HERE", "HERE")
         with(recycItemList) {
             layoutManager = LinearLayoutManager(context!!)
             adapter = DataListAdapter {
@@ -57,7 +58,15 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         }
         runObserver()
+        setNewText()
         srcView.setOnQueryTextListener(this)
+        fltAlphaOrDate.setOnClickListener(this)
+    }
+
+    private fun setNewText() {
+        mainViewModel.filteredText.observe(this, Observer {
+            newText = it
+        })
     }
 
     private fun runObserver() {
@@ -71,7 +80,16 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        mainViewModel.triggerSource(newText ?: "")
+        mainViewModel.triggerSource(newText ?: "", isAlphabet)
         return true
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.fltAlphaOrDate -> {
+                isAlphabet = !isAlphabet
+                mainViewModel.triggerSource(newText, isAlphabet)
+            }
+        }
     }
 }

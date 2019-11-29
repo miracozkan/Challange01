@@ -17,12 +17,14 @@ import com.miracozkan.challange01.datalayer.repo.MainRepository
 class MainViewModel(private val mainRepository: MainRepository) :
     BaseViewModel() {
 
-    private val filteredText by lazy { MutableLiveData<String>() }
+    val filteredText by lazy { MutableLiveData<String>() }
+    private val isAlphabet by lazy { MutableLiveData<Boolean>() }
 
     val fetchList = mainRepository.listApiResponse
 
-    fun triggerSource(text: String) {
+    fun triggerSource(text: String, state: Boolean) {
         filteredText.postValue(text)
-        mainRepository.setNewPaging(filteredText.value ?: "")
+        isAlphabet.postValue(state)
+        mainRepository.setNewPaging(text, state)
     }
 }
